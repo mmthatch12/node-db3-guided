@@ -77,4 +77,17 @@ router.delete('/:id', (req, res) => {
   });
 });
 
+router.get('/:id/posts', (req, res) => {
+  const { id } = req.params
+
+  db('posts as p')
+    .join('users as u', 'u.id', '=', 'p.user_id')
+    .where({ user_id: id })
+    .then(posts => {
+      res.status(200).json(posts)
+  }).catch(error => {
+    res.status(500).json(error)
+  })
+})
+
 module.exports = router;
